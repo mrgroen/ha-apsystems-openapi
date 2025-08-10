@@ -1,0 +1,11 @@
+{
+    "domain": "apsystems_openapi",
+    "name": "APsystems OpenAPI",
+    "version": "0.9.0",
+    "config_flow": true,
+    "documentation": "https://blackhole.nmrc.org/solar/apsystems-openapi/",
+    "codeowners": ["@thegnome"],
+    "requirements": [],
+    "iot_class": "cloud_polling",
+    "loggers": ["custom_components.apsystems_openapi"]
+}
