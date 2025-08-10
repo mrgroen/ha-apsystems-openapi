@@ -90,19 +90,14 @@ APS GET /user/api/v2/systems/summary/XXXX params=None s2s_preview=...
 APS https://api.apsystemsema.com:9282/... → 200 {"code":0,"data":{...}}
 ```
 
-### Recommended cleanup after successful setup
+## Recommended cleanup after successful setup
 
-Leave debug logging calls in the code — it is harmless unless enabled in configuration.yaml.
+- Leave debug logging calls in the code — it is harmless unless enabled in configuration.yaml.
+- In configuration.yaml, comment out the logger: section above once the integration is stable to reduce log noise.
+- If you want quieter code long-term, you can comment out specific `_LOGGER.debug` calls, but keeping them is fine; Home Assistant will not output them unless debug is enabled. The `_LOGGER.debug` calls are in:
+  - `api.py` → request/response preview lines
+  - `__init__.py` → coordinator refresh timings
 
-In configuration.yaml, comment out the logger: section above once the integration is stable to reduce log noise.
-
-If you want quieter code long-term, you can comment out specific _LOGGER.debug calls in:
-
-api.py → request/response preview lines
-
-__init__.py → coordinator refresh timings
-
-But keeping them is fine; Home Assistant will not output them unless debug is enabled.
 
 ## Troubleshooting
 
