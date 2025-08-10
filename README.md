@@ -1,93 +1,119 @@
-# APsystems OpenAPI
+# APsystems OpenAPI – Home Assistant Custom Integration
 
+This is a custom [Home Assistant](https://www.home-assistant.io/) integration for pulling **lifetime** and **daily** solar production data from the [APsystems OpenAPI](https://file.apsystemsema.com:8083/apsystems/resource/openapi/Apsystems_OpenAPI_User_Manual_End_User_EN.pdf). It is designed to integrate with the **Energy dashboard** and also provide today's production plus hourly production breakdowns.
 
+---
 
-## Getting started
+## Features
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- **Lifetime total kWh** (monotonic increasing) for use in the Energy dashboard
+- **Today’s total kWh** (resets daily) for quick daily monitoring
+- Hourly production values for the current day, exposed as attributes
+- Configurable polling interval
+- Uses **Home Assistant Config Flow** (no YAML required)
+- Includes debug logging for easy troubleshooting
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://blackhole.nmrc.org/solar/apsystems-openapi.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://blackhole.nmrc.org/solar/apsystems-openapi/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+---
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+1. Copy the `apsystems_openapi` folder and its contents into:
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+config/custom_components/
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Your structure should look like:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+```
+config/
+	custom_components/
+		apsystems_openapi/
+			init.py
+			api.py
+			config_flow.py
+			const.py
+			manifest.json
+			sensor.py
+```
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+2. Restart Home Assistant.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+3. Go to **Settings → Devices & Services → Add Integration**.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+4. Search for **APsystems OpenAPI**.
 
-## License
-For open source projects, say how it is licensed.
+5. Enter:
+- **App ID**: Provided by APsystems after API access approval
+- **App Secret**: Provided by APsystems
+- **System ID (SID)**: Found in your EMA portal
+- **Base URL**: Typically `https://api.apsystemsema.com:9282`
+- **Scan interval**: Seconds between updates (default 1800 = 30 minutes)
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+6. Save and wait for the first update.
+
+---
+
+## Adding to the Energy Dashboard
+
+1. Go to **Settings → Dashboards → Energy**.
+2. Under **Solar production**, select **`sensor.apsystems_total_energy_kwh`**.
+- This sensor has:
+  - `device_class: energy`
+  - `state_class: total_increasing`
+  - Unit: `kWh`
+3. Save changes.
+
+> ⚠️ **Do not** use `sensor.apsystems_today_energy_kwh` in the Energy dashboard — it resets daily and will break the Energy graph.  
+> You *can* use it in Lovelace cards for at-a-glance daily totals.
+
+---
+
+## Debug Logging
+
+This integration includes detailed debug logging in the code (`_LOGGER.debug` calls) for installation and troubleshooting.  
+To enable:
+
+```
+# add to configuration.yaml
+logger:
+  default: warning
+  logs:
+    custom_components.apsystems_openapi: debug
+    aiohttp.client: info
+```
+
+After restart, look for log lines like:
+
+APS GET /user/api/v2/systems/summary/XXXX params=None s2s_preview=...
+APS https://api.apsystemsema.com:9282/... → 200 {"code":0,"data":{...}}
+
+### Recommended cleanup after successful setup
+
+Leave debug logging calls in the code — it is harmless unless enabled in configuration.yaml.
+
+In configuration.yaml, comment out the logger: section above once the integration is stable to reduce log noise.
+
+If you want quieter code long-term, you can comment out specific _LOGGER.debug calls in:
+
+api.py → request/response preview lines
+
+__init__.py → coordinator refresh timings
+
+But keeping them is fine; Home Assistant will not output them unless debug is enabled.
+
+## Troubleshooting
+
+| Symptom | Possible Cause | Fix |
+| ------- | -------------- | --- |
+| code:4000 in logs | Wrong signing string (RequestPath must be last segment), wrong App ID/Secret, or clock drift | Check that your HA host clock is correct; verify credentials; sign only last URL segment |
+| code:5000 from hourly endpoint | No hourly data available yet or transient API error | Usually resolves on next update |
+| Old APsystems integration causing conflicts | Old domain/folder still present | Remove the old folder in custom_components/, delete old integration entry, disble old items in Energy dashboard if present, restart HA |
+
+## Credits
+
+Based on the official [APsystems OpenAPI User Manual](https://file.apsystemsema.com:8083/apsystems/resource/openapi/Apsystems_OpenAPI_User_Manual_End_User_EN.pdf).
+
+Built and tested with APsystems EMA accounts.
+
+## Disclaimer
+
+This is not an official APsystems integration. Use at your own risk. Be mindful of APsystems API request limits (default polling is set to 30 minutes to avoid hitting limits).
