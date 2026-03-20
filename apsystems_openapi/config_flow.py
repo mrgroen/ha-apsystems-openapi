@@ -81,15 +81,6 @@ class APSOptionsFlow(config_entries.OptionsFlow):
             vol.Optional("scan_interval", default=current.get("scan_interval", 3600)): vol.All(
                 int, vol.Range(min=1800, max=7200)
             ),
-            vol.Optional("summary_scan_interval", default=current.get("summary_scan_interval", 14400)): vol.All(
-                int, vol.Range(min=3600, max=86400)
-            ),
-            vol.Optional("inverter_scan_interval", default=current.get("inverter_scan_interval", 28800)): vol.All(
-                int, vol.Range(min=3600, max=86400)
-            ),
-            vol.Optional("focus_inverter_uid", default=current.get("focus_inverter_uid", "")): str,
-            vol.Optional("focus_inverter_scan_interval", default=current.get("focus_inverter_scan_interval", 3600)): vol.All(
-                int, vol.Range(min=1800, max=28800)
-            ),
+
         })
         return self.async_show_form(step_id="init", data_schema=schema)
