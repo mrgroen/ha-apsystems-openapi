@@ -12,16 +12,9 @@ STEP_USER_DATA_SCHEMA = vol.Schema({
     vol.Required("app_secret"): str,
     vol.Required("sid", description="System ID as shown in EMA"): str,
     vol.Optional("base_url", default=DEFAULT_BASE_URL): str,
-    vol.Optional("scan_interval", default=3600): vol.All(int, vol.Range(min=1800, max=7200)),  # 30 min to 2 hours
+    vol.Optional("scan_interval", default=1800): vol.All(int, vol.Range(min=1800, max=7200)),  # 30 min to 2 hours
     vol.Optional("sunrise_offset", default=30): vol.All(int, vol.Range(min=0, max=120)),  # minutes after sunrise
     vol.Optional("sunset_offset", default=30): vol.All(int, vol.Range(min=0, max=120)),  # minutes after sunset
-    vol.Optional("inverter_scan_interval", default=28800): vol.All(
-        int, vol.Range(min=3600, max=86400)
-    ),  # 1 hour to 24 hours
-    vol.Optional("focus_inverter_uid", default=""): str,  # UID or empty to disable
-    vol.Optional("focus_inverter_scan_interval", default=3600): vol.All(
-        int, vol.Range(min=1800, max=28800)
-    ),  # 30 min to 8 hours
 })
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -78,7 +71,7 @@ class APSOptionsFlow(config_entries.OptionsFlow):
 
         current = self._entry.data
         schema = vol.Schema({
-            vol.Optional("scan_interval", default=current.get("scan_interval", 3600)): vol.All(
+            vol.Optional("scan_interval", default=current.get("scan_interval", 1800)): vol.All(
                 int, vol.Range(min=1800, max=7200)
             ),
 
