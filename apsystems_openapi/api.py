@@ -1,5 +1,5 @@
-import base64, hmac, hashlib, time, uuid, aiohttp, logging
-from urllib.parse import urlencode
+import base64, hmac, hashlib, time, uuid, aiohttp, logging, json
+#from urllib.parse import urlencode
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ class APSClient:
             txt = await r.text()
             _LOGGER.debug("APS %s → %s %s", url, r.status, txt[:500])
             r.raise_for_status()
-            return await r.json()
+            return json.loads(txt)
 
     async def get_system_summary(self):
         return await self._get(f"/user/api/v2/systems/summary/{self.sid}")
