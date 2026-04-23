@@ -306,7 +306,7 @@ def analyze_inverter(uid: str, blob: dict, single_panel_uids: Set[str] = None) -
     t = blob.get("t") or blob.get("time") or []
     dc_p1 = parse_float_list(blob.get("dc_p1"))
     dc_p2 = parse_float_list(blob.get("dc_p2"))
-    ac_p = parse_float_list(blob.get("ac_p"))
+    ac_p = parse_float_list(blob.get("ac_p1") or blob.get("ac_p"))
 
     # If lists differ in length, pad/truncate safely
     n = min(len(t), len(dc_p1), len(dc_p2))

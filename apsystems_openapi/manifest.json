@@ -1,7 +1,7 @@
 {
     "domain": "apsystems_openapi",
     "name": "APsystems OpenAPI",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "config_flow": true,
     "documentation": "https://blackhole.nmrc.org/solar/apsystems-openapi/",
     "codeowners": ["@thegnome"],

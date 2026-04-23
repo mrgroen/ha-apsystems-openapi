@@ -65,3 +65,10 @@ class APSClient:
             f"/user/api/v2/systems/{self.sid}/devices/inverter/energy/{uid}",
             params={"energy_level": energy_level, "date_range": date_str},
         )
+
+    async def get_inverter_batch_power(self, eid: str, date_str: str):
+        """Get power telemetry for ALL inverters under an ECU in one call."""
+        return await self._get(
+            f"/user/api/v2/systems/{self.sid}/devices/inverter/batch/energy/{eid}",
+            params={"energy_level": "power", "date_range": date_str},
+        )

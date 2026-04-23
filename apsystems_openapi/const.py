@@ -1,15 +1,20 @@
 DOMAIN = "apsystems_openapi"
 DEFAULT_BASE_URL = "https://api.apsystemsema.com:9282"
-PLATFORMS = ["sensor"]
+PLATFORMS = ["sensor", "button"]
 
 # Default to 60 minute intervals to stay under 1000 queries/month
-DEFAULT_SCAN_INTERVAL = 3600  # seconds
+DEFAULT_SCAN_INTERVAL = 3600  # seconds (hourly energy)
 
-# Inverter data is fetched less frequently to conserve API budget.
-# 14400s = 4 hours → ~2-3 fetches/day during solar hours.
-# Each fetch makes 1 call per inverter, so total monthly inverter calls ≈
-# N_inverters × fetches_per_day × 30.
-DEFAULT_INVERTER_SCAN_INTERVAL = 14400  # seconds (4 hours)
+# Summary (lifetime/today/month/year) is fetched once per day near
+# the end of solar hours.  "today" is already derived from the hourly
+# series; the summary provides ground-truth lifetime/month/year.
 
-# Inverter list rarely changes; cache for 24 hours before re-fetching.
-INVERTER_LIST_CACHE_SECONDS = 86400
+# Inverter energy (minutely power/voltage/temperature) is fetched once
+# per day at 12:30 when panels should be active and producing.
+
+# Monthly budget estimate (11 solar hours/day, 30 days, 6 inverters):
+#   Hourly energy:       11h × 1/h × 30                  = 330
+#   Summary:             1/day × 30                       =  30
+#   Inverter energy:     1/day × 6inv × 30                = 180
+#   Inverter list:       manual button only               =   0
+#   Total                                                 ≈ 540 / 1000
